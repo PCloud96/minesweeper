@@ -1,81 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper: Classic Mine Puzzle</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 480px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .subtitle {
-            font-size: 1.1rem;
-            color: #aaa;
-            margin-bottom: 24px;
-        }
-        .description {
-            font-size: 1rem;
-            color: #ccc;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-        .links {
-            margin-bottom: 40px;
-        }
-        .links a {
-            display: inline-block;
-            color: #E8845C;
-            text-decoration: none;
-            font-size: 1rem;
-            margin: 0 12px;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            font-size: 0.85rem;
-            color: #888;
-            line-height: 1.8;
-        }
-        .footer a {
-            color: #E8845C;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>How do I play Minesweeper without guessing? | Minesweeper</title>
+<meta name="description" content="Play Minesweeper with no 50/50 guesses. Every board is checked to be solvable by pure logic before you see it. Free on iPhone, no account.">
+<link rel="canonical" href="https://cmlapps.github.io/minesweeper/">
+<meta name="theme-color" content="#FDF6F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141017" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cloud Motion Lab">
+<meta property="og:title" content="How do I play Minesweeper without guessing?">
+<meta property="og:description" content="Every board solvable by logic alone. No coin flips, no forced guesses.">
+<meta property="og:url" content="https://cmlapps.github.io/minesweeper/">
+<meta property="og:image" content="">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/png;base64,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">
+
+<style>
+/* ---- fallback tokens: any browser without oklch() gets a neutral, on-brand page ---- */
+:root{
+  --bg:#FBFAFC; --surface:#FFFFFF; --ink:#191920; --ink-2:#56565F;
+  --line:#E4E3E9; --accent:#1B1B22; --on-accent:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E0E13; --surface:#17171D; --ink:#F4F4F7; --ink-2:#A9A9B3;
+    --line:#33333C; --accent:#F4F4F7; --on-accent:#0E0E13;
+  }
+}
+/* ---- the real system: one app-specific number drives every colour on the page ---- */
+@supports (color: oklch(0.5 0.1 180)){
+  :root{
+    --h:45;
+    --bg:oklch(0.985 0.010 var(--h));
+    --surface:oklch(1 0 0);
+    --ink:oklch(0.20 0.020 var(--h));
+    --ink-2:oklch(0.44 0.018 var(--h));
+    --line:oklch(0.860 0.022 var(--h));
+    --accent:oklch(0.48 0.160 var(--h));
+    --on-accent:oklch(0.99 0.005 var(--h));
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:oklch(0.165 0.014 var(--h));
+      --surface:oklch(0.205 0.016 var(--h));
+      --ink:oklch(0.965 0.006 var(--h));
+      --ink-2:oklch(0.735 0.014 var(--h));
+      --line:oklch(0.365 0.022 var(--h));
+      --accent:oklch(0.780 0.150 var(--h));
+      --on-accent:oklch(0.170 0.030 var(--h));
+    }
+  }
+}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --rail:24px;
+  color-scheme:light dark;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.55;
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+::selection{background:var(--accent);color:var(--on-accent)}
+a{color:inherit}
+a:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:3px;
+}
+/* the CTA is already accent-filled, so its ring is ink: a different mark, not a louder one */
+.cta:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.doc{
+  max-width:640px;
+  margin:0 auto;
+  padding:20px 20px calc(48px + env(safe-area-inset-bottom)) 20px;
+}
+@media (min-width:600px){ .doc{padding:32px 32px 64px} }
+
+/* ---- masthead ---- */
+.masthead{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:32px;
+}
+.brand{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  text-decoration:none;
+}
+.brand:hover{color:var(--ink)}
+/* the right slot is a support jump, not a decorative genre label. This URL is the
+   App Store Support URL, so a contact route has to be reachable without scrolling. */
+.masthead .support-jump{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+}
+.masthead .support-jump:hover{color:var(--ink)}
+
+/* ---- the question: semantically first, visually second ---- */
+.q{
+  font-size:20px;
+  font-weight:590;
+  line-height:1.35;
+  letter-spacing:-0.011em;
+  color:var(--ink-2);
+  margin:0 0 12px;
+  text-wrap:balance;
+}
+/* ---- the answer: the largest type on the page, because it is why anyone is here ---- */
+.a{
+  font-size:27px;
+  font-weight:600;
+  line-height:1.26;
+  letter-spacing:-0.022em;
+  margin:0 0 28px;
+  text-wrap:pretty;
+}
+@media (min-width:600px){
+  .q{font-size:22px}
+  .a{font-size:32px;margin-bottom:32px}
+}
+
+/* ---- the one conversion event. Radii are concentric: 12 button + 14 padding = 26 card ---- */
+.get{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:14px;
+  margin-bottom:48px;
+}
+.get-app{display:flex;align-items:center;gap:12px;margin:2px 0 16px 2px}
+.get-icon{
+  width:56px;height:56px;flex:none;
+  border-radius:13px;
+  box-shadow:0 0 0 1px var(--line);
+  display:block;
+}
+.get-name{font-size:17px;font-weight:600;letter-spacing:-0.012em;line-height:1.25}
+.get-meta{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--ink-2);
+  letter-spacing:0.01em;
+  margin-top:3px;
+}
+.cta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 16px;
+  background:var(--accent);
+  color:var(--on-accent);
+  border-radius:12px;
+  font-size:clamp(15px,4.2vw,17px);
+  font-weight:700;
+  letter-spacing:-0.012em;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:transform .16s cubic-bezier(.2,.7,.2,1),filter .16s ease;
+}
+.cta:hover{filter:brightness(1.08)}
+.cta:active{transform:scale(.985)}
+
+/* ---- the rail: everything below the answer is apparatus, and hangs off one line ---- */
+.rail{
+  border-left:1px solid var(--line);
+  margin-left:7px;
+  padding-left:var(--rail);
+}
+.sec{margin-bottom:44px}
+.sec:last-child{margin-bottom:0}
+.lbl{
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.13em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:0 0 16px calc(-1px - var(--rail));
+  padding:2px 0;
+  background:var(--bg);
+}
+
+/* ---- steps: numbered because the content genuinely is a sequence ---- */
+.steps{list-style:none;counter-reset:step;margin:0;padding:0}
+.steps li{position:relative;margin-bottom:20px}
+.steps li:last-child{margin-bottom:0}
+.steps li::before{
+  counter-increment:step;
+  content:counter(step);
+  position:absolute;
+  left:calc(-1px - var(--rail));
+  top:0;
+  width:var(--rail);
+  font-family:var(--mono);
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  line-height:26px;
+  color:var(--ink-2);
+  background:var(--bg);
+}
+.steps b{display:block;font-weight:600;letter-spacing:-0.01em}
+.steps p{margin:2px 0 0;color:var(--ink-2)}
+
+/* ---- support: the address is set in full-strength ink, never in the accent.
+       Weight and colour do the work so the CTA keeps the only coloured mark ---- */
+.support{scroll-margin-top:20px}
+.support p{margin:0;color:var(--ink-2)}
+.support-mail{
+  display:inline-block;
+  margin-bottom:8px;
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-0.012em;
+  color:var(--ink);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+
+/* ---- facts ---- */
+.facts{margin:0;font-size:15px}
+.facts div{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  padding:9px 0;
+  border-bottom:1px solid var(--line);
+}
+.facts div:last-child{border-bottom:0}
+.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-2);padding-top:2px}
+.facts dd{margin:0;text-align:right}
+
+/* ---- questions: always open, no script, fully extractable ---- */
+.faq h3{
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  line-height:1.4;
+  margin:0 0 4px;
+}
+.faq p{margin:0 0 20px;color:var(--ink-2)}
+.faq p:last-child{margin-bottom:0}
+
+/* ---- footer ---- */
+.foot{
+  margin-top:48px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:1.9;
+  color:var(--ink-2);
+}
+.foot-store{
+  display:inline-block;
+  color:var(--ink);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  margin-bottom:14px;
+}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:14px}
+.foot-links a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line)}
+.foot-links a:hover{color:var(--ink)}
+.foot-legal{letter-spacing:0.02em}
+
+/* ---- one entrance, transform only: nothing on this page is ever invisible ---- */
+@keyframes rise{from{transform:translateY(10px)}to{transform:translateY(0)}}
+.q,.a,.get{animation:rise .5s cubic-bezier(.2,.75,.25,1) both}
+.a{animation-delay:.05s}
+.get{animation-delay:.11s}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Minesweeper: Classic Mine Puzzle</h1>
-        <p class="subtitle">Logic, Not Luck</p>
-        <p class="description">The Minesweeper that doesn't interrupt you with ads, doesn't force you to guess, and actually looks good on your phone.</p>
-        <div class="links">
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Use</a>
-        </div>
-        <div class="footer">
-            Made with &#9829; by Cloud Motion Lab LLC<br>
-            <a href="mailto:dev@slyapp.co">dev@slyapp.co</a>
-        </div>
+<main class="doc">
+
+  <header class="masthead">
+    <a class="brand" href="https://cmlapps.github.io/">Cloud Motion Lab</a>
+    <a class="support-jump" href="#support">Support</a>
+  </header>
+
+  <h1 class="q">How do I play Minesweeper without guessing?</h1>
+
+  <p class="a">Minesweeper: No Guess Puzzle generates boards that are provably solvable by logic alone, so you never reach a 50/50 where two squares are equally likely and you have to flip a coin. The generator checks every board before you see it and discards any that would force a guess.</p>
+
+  <div class="get">
+    <div class="get-app">
+      <img class="get-icon" src="data:image/png;base64,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" alt="" width="56" height="56">
+      <div>
+        <div class="get-name">Minesweeper: No Guess Puzzle</div>
+        <div class="get-meta">Logic puzzle for iPhone · iOS 17.0 or later</div>
+      </div>
     </div>
+    <a class="cta" href="https://apps.apple.com/us/app/minesweeper-no-guess-puzzle/id6760481311">Get Minesweeper on the App Store</a>
+  </div>
+
+  <div class="rail">
+
+    <section class="sec">
+      <h2 class="lbl">How it works</h2>
+      <ol class="steps">
+        <li><b>Pick a size</b><p>Beginner 9x9 with 10 mines, Intermediate 16x16 with 40, or Expert 30x16 with 99. The original three. A custom size is there if you want one.</p></li>
+        <li><b>Tap to open, hold to flag</b><p>A number tells you how many mines touch that square, counting diagonals. Tap an opened number with the right count of flags around it and the rest of its neighbours open at once.</p></li>
+        <li><b>Deduce, do not gamble</b><p>Every board in No-Guess mode has a next safe move that follows from what is already on screen. If you cannot see it, the information is there and you have not found it yet. Three safe hints per game are available if you want one.</p></li>
+        <li><b>Come back tomorrow</b><p>The Daily Challenge is the same board for everyone worldwide, one attempt, and it tracks a streak. Themes unlock as you win.</p></li>
+      </ol>
+    </section>
+
+    <section class="sec">
+      <h2 class="lbl">The app</h2>
+      <dl class="facts">
+        <div><dt>Price</dt><dd>Free to download and free to play. A one-time unlock or a weekly subscription removes ads and opens Series mode, statistics, unlimited hints and the full theme set.</dd></div>
+        <div><dt>Requires</dt><dd>iPhone, iOS 17.0 or later. Every board is generated on the device and it works with no connection.</dd></div>
+        <div><dt>Account</dt><dd>None. No sign-up, no email address, no login. Your times and streaks stay on your phone.</dd></div>
+        <div><dt>Modes</dt><dd>Classic, Daily Challenge, Series and Sprint.</dd></div>
+        <div><dt>Publisher</dt><dd>Cloud Motion Lab LLC</dd></div>
+      </dl>
+    </section>
+
+    <section class="sec faq">
+      <h2 class="lbl">Common questions</h2>
+      <h3>What is a 50/50 in Minesweeper?</h3>
+      <p>A position where the remaining information cannot tell you which of two squares holds the mine. Both are exactly as likely, no amount of thinking helps, and you lose half the time by pure chance. It usually appears late, after twenty minutes of correct deduction, which is what makes it so irritating. It is not a mistake you made. It is a property of the board you were dealt.</p>
+      <h3>How does a no-guess board actually work?</h3>
+      <p>The generator lays out a candidate board, then runs a solver against it that only uses deduction a human can follow. If the solver reaches a point where it must guess, the board is thrown away and another is generated. You only ever see boards that survived. This is done before the first tap, so it costs you no waiting during the game.</p>
+      <h3>Is a no-guess board still real Minesweeper?</h3>
+      <p>The rules are identical: same numbers, same flags, same chording, same three standard sizes. What changes is which boards are dealt to you, not how the game is played. Purists reasonably argue that risk under uncertainty is part of the original design, which is why Retro mode exists and uses unmodified random generation, guesses and all. Pick whichever argument you find convincing.</p>
+      <h3>What are the standard board sizes?</h3>
+      <p>Beginner is 9 by 9 with 10 mines, Intermediate is 16 by 16 with 40, and Expert is 30 by 16 with 99. These are the sizes the original game shipped with and the ones speedrun records are set on. There is also a custom size if you want something else.</p>
+      <h3>Does it have ads?</h3>
+      <p>There are rewarded ads you can choose to watch in exchange for a hint or an undo, and there are occasional full-screen ads between games. Buying the unlock removes advertising entirely. There is no ad before you can start playing.</p>
+      <h3>Is it free?</h3>
+      <p>The game is free to download and the boards, the daily challenge and the standard difficulties cost nothing. The paid unlock removes ads and opens Series mode, the statistics dashboard, unlimited hints and undo, and the full theme set. It is sold as a one-time purchase or a weekly subscription.</p>
+    </section>
+
+    <section class="sec support" id="support">
+      <h2 class="lbl">Support</h2>
+      <a class="support-mail" href="mailto:dev@slyapp.co">dev@slyapp.co</a>
+      <p>If a board looked unsolvable, a purchase did not unlock, or a streak reset when it should not have, write to us and say which mode and which difficulty. One person reads this address and replies.</p>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    <a class="foot-store" href="https://apps.apple.com/us/app/minesweeper-no-guess-puzzle/id6760481311">Minesweeper: No Guess Puzzle on the App Store</a>
+    <div class="foot-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:dev@slyapp.co">Contact</a>
+      <a href="https://cmlapps.github.io/">All apps</a>
+    </div>
+    <div class="foot-legal">Cloud Motion Lab LLC, dev@slyapp.co</div>
+  </footer>
+
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Minesweeper: No Guess Puzzle",
+  "operatingSystem": "iOS 17.0 or later",
+  "applicationCategory": "GameApplication",
+  "applicationSubCategory": "Puzzle",
+  "url": "https://apps.apple.com/us/app/minesweeper-no-guess-puzzle/id6760481311",
+  "installUrl": "https://apps.apple.com/us/app/minesweeper-no-guess-puzzle/id6760481311",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cloud Motion Lab LLC",
+    "email": "dev@slyapp.co"
+  },
+  "description": "Minesweeper: No Guess Puzzle generates boards that are provably solvable by logic alone, so you never reach a 50/50 where two squares are equally likely and you have to flip a coin. The generator checks every board before you see it and discards any that would force a guess."
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I play Minesweeper without guessing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Minesweeper: No Guess Puzzle generates boards that are provably solvable by logic alone, so you never reach a 50/50 where two squares are equally likely and you have to flip a coin. The generator checks every board before you see it and discards any that would force a guess."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a 50/50 in Minesweeper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A position where the remaining information cannot tell you which of two squares holds the mine. Both are exactly as likely, no amount of thinking helps, and you lose half the time by pure chance. It usually appears late, after twenty minutes of correct deduction, which is what makes it so irritating. It is not a mistake you made. It is a property of the board you were dealt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does a no-guess board actually work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The generator lays out a candidate board, then runs a solver against it that only uses deduction a human can follow. If the solver reaches a point where it must guess, the board is thrown away and another is generated. You only ever see boards that survived. This is done before the first tap, so it costs you no waiting during the game."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a no-guess board still real Minesweeper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The rules are identical: same numbers, same flags, same chording, same three standard sizes. What changes is which boards are dealt to you, not how the game is played. Purists reasonably argue that risk under uncertainty is part of the original design, which is why Retro mode exists and uses unmodified random generation, guesses and all. Pick whichever argument you find convincing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the standard board sizes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Beginner is 9 by 9 with 10 mines, Intermediate is 16 by 16 with 40, and Expert is 30 by 16 with 99. These are the sizes the original game shipped with and the ones speedrun records are set on. There is also a custom size if you want something else."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it have ads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There are rewarded ads you can choose to watch in exchange for a hint or an undo, and there are occasional full-screen ads between games. Buying the unlock removes advertising entirely. There is no ad before you can start playing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The game is free to download and the boards, the daily challenge and the standard difficulties cost nothing. The paid unlock removes ads and opens Series mode, the statistics dashboard, unlimited hints and undo, and the full theme set. It is sold as a one-time purchase or a weekly subscription."
+      }
+    }
+  ]
+}
+</script>
+
 </body>
 </html>
